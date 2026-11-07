@@ -229,16 +229,22 @@ backToTop.addEventListener('click', () => {
 });
 
 const form = document.querySelector('.contact-form');
-form?.addEventListener('submit', () => {
-  const submitButton = form.querySelector('button[type="submit"]');
-  const status = form.querySelector('.form-status');
+form?.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-  if (submitButton) {
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-  }
-  if (status) {
-    status.textContent = 'Sending your message. You will be redirected when it is submitted.';
-    status.dataset.state = 'sending';
-  }
+  const formData = new FormData(form);
+  const name = String(formData.get('name') || '').trim();
+  const email = String(formData.get('email') || '').trim();
+  const message = String(formData.get('message') || '').trim();
+  const composeUrl = new URL('https://mail.google.com/mail/');
+
+  composeUrl.search = new URLSearchParams({
+    view: 'cm',
+    fs: '1',
+    to: 'alvintampus3@gmail.com',
+    su: `Portfolio inquiry from ${name}`,
+    body: `Name: ${name}\nEmail: ${email}\n\n${message}`
+  });
+
+  window.location.assign(composeUrl.toString());
 });
