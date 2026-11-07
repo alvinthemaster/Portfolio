@@ -441,6 +441,13 @@ main {
   cursor: zoom-in;
 }
 
+.gallery-main video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
 .gallery-nav,
 .image-modal-nav,
 .image-modal-close {
@@ -594,30 +601,52 @@ main {
 .timeline::before {
   content: "";
   position: absolute;
-  left: 1rem;
+  left: 0.4rem;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: linear-gradient(var(--primary), var(--secondary));
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary) 55%, var(--primary));
+  opacity: 0.8;
 }
 
 .timeline-item {
   display: grid;
-  grid-template-columns: 90px 1fr;
+  grid-template-columns: 120px 1fr;
   gap: 1rem;
   align-items: start;
   padding: 1rem 0;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  top: 2.2rem;
+  width: 9px;
+  aspect-ratio: 1;
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
 }
 
 .timeline-year {
   display: inline-flex;
   justify-content: center;
+  justify-self: start;
+  margin-left: 1.35rem;
   padding: 0.45rem 0.7rem;
   border-radius: 999px;
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--primary);
   font-weight: 700;
+}
+
+.timeline-item h3 {
+  margin-top: 0;
 }
 
 .contact-form {
@@ -639,6 +668,25 @@ main {
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.03);
   color: var(--text);
+}
+
+.contact-form .form-status {
+  min-height: 1.5em;
+  margin: 0;
+  color: var(--muted);
+}
+
+.contact-form .form-status[data-state="success"] {
+  color: var(--primary);
+}
+
+.contact-form .form-status[data-state="error"] {
+  color: #ff8a8a;
+}
+
+.contact-form button:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 .social-links {
@@ -769,6 +817,11 @@ main {
 
   .timeline-item {
     grid-template-columns: 1fr;
+  }
+
+  .timeline-year,
+  .timeline-item > div {
+    margin-left: 1.35rem;
   }
 
   .site-footer {
