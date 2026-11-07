@@ -229,55 +229,16 @@ backToTop.addEventListener('click', () => {
 });
 
 const form = document.querySelector('.contact-form');
-form?.addEventListener('submit', async (event) => {
-  event.preventDefault();
-
+form?.addEventListener('submit', () => {
   const submitButton = form.querySelector('button[type="submit"]');
   const status = form.querySelector('.form-status');
-  const originalButtonText = submitButton?.textContent;
-  const formData = Object.fromEntries(new FormData(form));
-  formData._subject = `Portfolio inquiry from ${formData.name}`;
 
   if (submitButton) {
     submitButton.disabled = true;
     submitButton.textContent = 'Sending...';
   }
   if (status) {
-    status.textContent = 'Sending your message...';
+    status.textContent = 'Sending your message. You will be redirected when it is submitted.';
     status.dataset.state = 'sending';
-  }
-
-  try {
-    const response = await fetch('https://formsubmit.co/ajax/alvintampus3@gmail.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-    const result = await response.json();
-
-    if (!response.ok || ![true, 'true'].includes(result.success)) {
-      throw new Error(result.message || 'The message could not be sent. Please try again.');
-    }
-
-    form.reset();
-    if (status) {
-      status.textContent = 'Message sent. Thanks for getting in touch!';
-      status.dataset.state = 'success';
-    }
-  } catch (error) {
-    if (status) {
-      status.textContent = window.location.protocol === 'file:'
-        ? 'Open this site through a local web server (such as VS Code Live Server) before sending.'
-        : 'Could not connect to the email service. Check your connection and try again.';
-      status.dataset.state = 'error';
-    }
-  } finally {
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.textContent = originalButtonText;
-    }
   }
 });
